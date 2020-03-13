@@ -2,7 +2,9 @@
 An admittedly somewhat naive approach to computing PI using a Monte Carlo Simulation with standard python floating point implementation
 
 ## Methodology
-
+![explanation](explanation.jpg)
+![graph](graph.jpg)
+- Graph generated using [Desmos](https://www.desmos.com/)
 ## Implementation:
 - A monte carlo simulation was configured to calculate Pi given a fixed number of iterations and a specified radius for the circle. 
 - Calculations were repeated and averaged for each iteration a pre specified number of times
