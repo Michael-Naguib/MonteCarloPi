@@ -124,6 +124,12 @@ def reject_outliers(data, m=2):
 # Main Simulation
 if __name__ == "__main__":
 
+    cnt=0
+    for newEst in monteCarloPiItr():
+        cnt+=1
+        if cnt%10000==0:
+            print(newEst)
+
     # Sample every k iterations:
     k = 10
 
