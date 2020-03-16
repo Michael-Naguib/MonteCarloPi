@@ -37,6 +37,7 @@ as we do not have to deal with the integration the gamma function proposes. Ther
 ![intNBall Vol](volumeIntNBall.PNG)
 
 - The Volume of a Hypercube or a cube in N Dimensions (2D: Square, 3D: Cube ,4D: Tesseract, 5D & on ... Hypercube) has a much nicer looking formula. (image credit [PhysicsInsights](http://www.physicsinsights.org/hypercubes_1.html)) 
+
 ![hypercubeVol](volumeHypercube.PNG)
 
 #### Construction
