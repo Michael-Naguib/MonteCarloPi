@@ -1,4 +1,4 @@
-H# MonteCarloPi
+# MonteCarloPi
 An admittedly somewhat naive approach to computing PI using a Monte Carlo Simulation with standard python floating point implementation
 - This project contains 2 versions of the code located in 
 ```montecarlopi.py``` and ```nDimensionalMonteCarloPi.py``` respectivly
