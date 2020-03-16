@@ -17,16 +17,7 @@ limited by the precision of the nth root function. (in addition to long division
 import numpy as np
 import tqdm
 import math
-import random
-
-def distSqr(x,y):
-    '''
-    :description: Calculates the distance squared from a point with coordinates x,y from the origin 0,0
-    :param x: x coordinate
-    :param y: y coordinate
-    :return: distance squared
-    '''
-    return math.pow(x,2) + math.pow(y,2)
+import matplotlib.pyplot as plt
 
 def magSquared(vector):
     '''
@@ -120,7 +111,7 @@ def monteCarloPiItrGenerator(dimension):
         calcPiEstimate = nDFuncGenerator(dimension)
 
         # Begin iteration: i is the total up to that iteration .. (all points are in the square)
-        for i in range(0, iterations + 1):
+        for i in range(0, iterations):
             # Pick random coords: the circle is centered @ 0,0 ... 0  so shift over the range of the square by subtracting 0.5
             # before scaling by the sidelength of the square ( side length = 2*radius)
             x = (np.random.rand(dimension)-s)*2*radius
@@ -137,17 +128,92 @@ def monteCarloPiItrGenerator(dimension):
     # Return the N- Dimensional configured Monte Carlo Pi calculator
     return monteCarloPiItr
 
+def reject_outliers(data, m=2):
+    '''
+    NOT MY CODE: i take no credit for this code...
+    thanks to: https://stackoverflow.com/questions/11686720/is-there-a-numpy-builtin-to-reject-outliers-from-a-list
+    :Description: this code rejects outliers ....
+    :param data: array
+    :param m:
+    :return: data without outliers
+    '''
+    return data[abs(data - np.mean(data)) < m * np.std(data)]
+
+def updateRunningAvg(curAvg,val,valCnt):
+    '''
+    :description: compute a running average
+    :param curAvg: the current value of the average
+    :param val: the new value to factor into the average
+    :param valCnt: the number of values taken into account for the curAvg
+    :return: the updated average
+
+    (NOTE! this function does not change any of the parameters --> no side effect...)
+    it is the prgmr's responsibility to update those vals
+    '''
+    assert valCnt != 0
+    return (curAvg*valCnt + val)/(valCnt+1)
+
+def monteCarloSim(dimension,radius=1,iterations=10_000,redos=100,log=True):
+    '''
+    :description: performs a monte carlo simulation configured by the parameters and then takes each redundant
+    simulation and averages it at the coresponding timestep.
+    :param dimension: the dimension to make the calculation in
+    :param radius: the radius for the hypersphere
+    :param iterations: the number of successive estimates of pi
+    :param redos: the number of times to repete the simulation
+    :param log: if true prints progress of the redundant sims
+    :return: list of avg values of pi at each time step
+    '''
+    assert redos>=1
+    #init the first
+    avgData =  [newEst for newEst in monteCarloPiItrGenerator(dimension)(radius=radius, iterations=iterations)]
+    logger = tqdm.tqdm if log else lambda x: x
+    # do the remainder
+    for r in logger(range(0,redos-1)):
+        latestSim = [newEst for newEst in monteCarloPiItrGenerator(dimension)(radius=radius, iterations=iterations)]
+        for i in range(len(avgData)):
+            avgData[i] = updateRunningAvg(avgData[i],latestSim[i],r+1)
+    return avgData
 
 if __name__ == "__main__":
     # Settings
-    dimension = 6          # Run the simulation in nth Dimensional space
+    dimension = 4          # Run the simulation in nth Dimensional space
     radius = 1              # Radius of the hypersphere
-    iterations = 10_000_000 # maximum iterations
+    iterations = 10_000 # maximum iterations
+    '''
     logEvery = 10_000       # Log every so many iterations
-
     # Run the simulation
     cnt=0
     for newEst in monteCarloPiItrGenerator(dimension)(radius=radius,iterations=iterations):
         cnt+=1
         if cnt%logEvery==0:
             print(newEst)
+    '''
+    dimensions= list(range(2,10))
+    bins = 100
+    allSeries=[]
+    rejectionStrength = 2
+    for d in dimensions:
+        #series=[newEst for newEst in tqdm.tqdm(monteCarloPiItrGenerator(d)(radius=radius,iterations=iterations))]
+        series = monteCarloSim(d)
+        series = reject_outliers( np.array(series),m=rejectionStrength)
+        allSeries.append(series)
+    assert(len(allSeries)==len(dimensions))
+    meanOfAllData = 0
+    for series in allSeries:
+        meanOfAllData+= series.mean()/len(allSeries)
+    fig, ax = plt.subplots()
+    for i in range(len(allSeries)):
+        ax.hist(allSeries[i],bins,label="{0}D".format(dimensions[i]),alpha=0.5)
+    # Dashed line indicate the estimate of pi
+    ax.axvline(meanOfAllData, color='k', linestyle='dashed', linewidth=1)
+    #Solid line indicate what is taken as the true value of pi
+    ax.axvline(3.14159265358979, color='k', linestyle='solid', linewidth=1)
+    #Plot info
+    plt.legend(loc="best")
+    plt.title("Estimates for Pi (redos=100,radius=1,sample=10k)".format())
+    plt.xlabel("Estimate Values (Outliers)")
+    plt.show()
+
+
+
