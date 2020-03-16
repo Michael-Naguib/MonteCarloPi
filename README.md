@@ -1,4 +1,4 @@
-# MonteCarloPi
+H# MonteCarloPi
 An admittedly somewhat naive approach to computing PI using a Monte Carlo Simulation with standard python floating point implementation
 - This project contains 2 versions of the code located in 
 ```montecarlopi.py``` and ```nDimensionalMonteCarloPi.py``` respectivly
@@ -51,7 +51,7 @@ as we do not have to deal with the integration the gamma function proposes. Ther
 
 ![hyperspherePi2](hyperspherePi2.PNG)
 
-- Now by solving the hypercuve volume equation for 2^k or 2^(k+1) we can achieve the following equation for pi in terms of the volume of the hypersphere and volume of the hypercube:
+- Now by solving the hypercube volume equation for 2^k or 2^(k+1) we can achieve the following equation for pi in terms of the volume of the hypersphere and volume of the hypercube:
 
 ![piEqn](PiEqn.PNG)
 - Since all terms inside the roots remain positive the functions can be decomposed into the following pieces: a function of the hypervolumes multiplied by a constant for the dimensionality (this suggested an efficient implementation by calculating these rather expensive constants only once)
