@@ -67,7 +67,7 @@ as we do not have to deal with the integration the gamma function proposes. Ther
 
 ![inRule](inRule.PNG)
 
-- Pi was finally approximated using the functional expression listed earlier where pi is a function of Dimension as well as the volumes of the hypeshapes. 
+- Pi was finally approximated using the functional expression listed earlier where pi is a function of Dimension as well as the volumes of the hypersphere and hypercube. 
 
 ### Implementation: ```nDimensionalMonteCarloPi.py```
 - A monte carlo simulation was configured to calculate Pi given a fixed number of iterations and a specified radius for the circle. 
