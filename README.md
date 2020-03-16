@@ -63,7 +63,7 @@ as we do not have to deal with the integration the gamma function proposes. Ther
 - The final step involves approximating the hypervolumes of both. This is accomplished by selecting points from a uniform distribution in the dimension n restricted by the radius: (note! all points will always be in the hypercube)
 
 ![pointD](pointD.PNG)
-- To determine whether or not the point is withine the hypercube the squared magnitude of the point vector was calculated and compared with the squared radius of the hypersphere. (Squared terms were compared as to be computationally efficient and avoid a square root where possible) ... If the the magnitude was less then the point was within the hypersphere and the count for the hypersphere volume was incremented
+- To determine whether or not the point is withine the hypercube the squared magnitude of the point vector was calculated and compared with the squared radius of the hypersphere. (Squared terms were compared as to be computationally efficient and avoid a square root where possible) ... If the the squared radius was greater than or equal to the magnitude of the point then the point was within the hypersphere and the count for the hypersphere volume was incremented
 
 ![inRule](inRule.PNG)
 
